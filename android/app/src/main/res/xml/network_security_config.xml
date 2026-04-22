@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    network_security_config.xml
+    Android Network Security Configuration
+    Permet les connexions HTTPS vers tiragepromobf.com (Hostinger / Let's Encrypt)
+-->
+<network-security-config>
+    <!-- Configuration de base : HTTPS seulement (pas de cleartext HTTP) -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <!-- Faire confiance aux CAs système (Let's Encrypt inclus) -->
+            <certificates src="system" />
+            <!-- Faire confiance aux CAs utilisateur (utile pour le débogage avec Charles/Proxyman) -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Configuration spécifique pour le backend Hostinger -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">tiragepromobf.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

@@ -1,0 +1,41 @@
+Options -Indexes
+
+# Sécurité : bloquer l'accès aux fichiers sensibles
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+<Files "composer.json">
+    Order allow,deny
+    Deny from all
+</Files>
+<Files "composer.lock">
+    Order allow,deny
+    Deny from all
+</Files>
+<FilesMatch "\.(log|sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protection du dossier logs
+<DirectoryMatch "logs">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
+
+# CORS – autoriser les appels depuis l'application Flutter
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Authorization, Content-Type, X-Requested-With"
+Header always set Access-Control-Max-Age "3600"
+
+# Répondre aux requêtes OPTIONS (preflight CORS)
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Sécurité supplémentaire
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "DENY"
+Header set X-XSS-Protection "1; mode=block"
